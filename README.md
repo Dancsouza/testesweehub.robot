@@ -82,7 +82,7 @@ URL: https://www.blazedemo.com
 
 Cenário: Fluxo completo de compra de passagem aérea com sucesso.
 
-📈 Critérios de Aceitação (SLA) vs. Resultados
+Critérios de Aceitação (SLA) vs. Resultados
 
 Métrica                          Meta (SLA)                  Resultado              Status
 
