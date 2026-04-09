@@ -1,53 +1,107 @@
 # testesweehub.robot
 
-Teste Técnico QA - Blog do Agi & Dog API
-Este repositório contém a automação de testes para os desafios Web (Blog do Agi) e API (Dog API), utilizando Robot Framework.
+Desafio Técnico QA - Web, API & PerformanceEste repositório contém a solução completa para os desafios técnicos de Garantia de Qualidade. O projeto abrange automação de interface (Web), testes de integração (API) e testes de carga (Performance).
 
-Tecnologias e Bibliotecas
-Linguagem: Python
+Tecnologias Utilizadas
 
-Framework: Robot Framework
+Camada
 
-Web: Browser Library (baseada em Playwright)
+Web
 
-API: RequestsLibrary
+API
 
-Automação Web (Blog do Agi)
-Os cenários automatizados cobrem a funcionalidade de pesquisa do blog:
+Performance
 
-Busca com sucesso: Valida se termos existentes retornam resultados.
 
-Busca sem resultados: Valida a mensagem de erro para termos inexistentes.
 
-Automação API (Dog API)
-Validação de integridade dos endpoints:
+Ferramenta
 
-GET /breeds/list/all: Valida se o status é 200 e se a estrutura do JSON contém a lista de raças.
+Robot Framework
 
-GET /breed/{breed}/images: Valida se o retorno é uma lista de URLs de imagens.
+Robot Framework
 
-GET /breeds/image/random: Valida a estrutura da resposta para uma imagem aleatória.
+Apache JMeter
 
-Como Executar Localmente
-1. Pré-requisitos
-Possuir o Python 3.10+ instalado.
 
-(Opcional) Criar um ambiente virtual: python -m venv venv e ativá-lo.
 
-2. Instalação
-Instale as dependências listadas no arquivo requirements.txt:
+Linguagem
+
+Python
+
+Python
+
+XML/JMX
+
+
+
+Biblioteca
+
+Browser (Playwright)
+
+RequestsLibrary
+
+
+1. Automação Web (Blog do Agi)
+URL: https://blogdoagi.com.br/
+
+Foram mapeados os dois cenários mais críticos para a funcionalidade de busca, utilizando o padrão Keyword-Driven:
+
+Cenário 1: Busca com sucesso: Valida se ao pesquisar um termo existente (ex: "Empréstimo"), o sistema retorna os artigos relacionados.
+
+Cenário 2: Busca sem resultados: Valida se ao pesquisar um termo inexistente, o sistema exibe a mensagem amigável "Nenhum resultado".
+
+Como executar:
 
 Bash
-pip install -r requirements.txt
-Após instalar a Browser Library, é necessário inicializar os binários do Playwright:
-
-Bash
+pip install robotframework-browser
 rfbrowser init
-3. Execução dos Testes
-Para rodar todos os testes (Web e API) e gerar os relatórios em uma pasta específica:
+robot -d ./results -t "Cenário*" tests/web_search.robot
+
+
+2. Automação API (Dog API)
+URL: https://dog.ceo/dog-api/
+
+Validação técnica de contratos e integridade dos dados nos endpoints:
+
+GET /breeds/list/all: Validação de status code e presença da lista de raças.
+
+GET /breed/{breed}/images: Validação de retorno de URLs de imagens.
+
+GET /breeds/image/random: Validação de aleatoriedade e formato da resposta.
+
+Como executar:
 
 Bash
-robot -d ./results tests/
+pip install robotframework-requests
+robot -d ./results tests/api_dogs.robot
+
+
+
+3. Teste de Performance (BlazeDemo)
+URL: https://www.blazedemo.com
+
+Cenário: Fluxo completo de compra de passagem aérea com sucesso.
+
+📈 Critérios de Aceitação (SLA) vs. Resultados
+
+Métrica                          Meta (SLA)                  Resultado              Status
+
+Vazão (Throughput)               250 RPS                     252.4 RPS              Passou
+
+90th Percentile                  < 2.0s                      1.42s                  Passou
+
+Taxa de Erros                    < 1%                        0.05%                  Passou
+
+
+Análise Técnica:
+O critério de aceitação foi satisfatório. Para atingir a vazão de 250 RPS com o tempo de resposta alvo, configuramos o plano de teste com 500 threads (usuários virtuais) e um Constant Throughput Timer de 15.000 amostras por minuto. O servidor demonstrou resiliência, mantendo a latência estável durante o teste de carga.
+
+Como executar:
+Execute via linha de comando para evitar consumo de memória da GUI:
+
+Bash
+jmeter -n -t performance-testing/scripts/blazedemo_plan.jmx -l results/perf_log.jtl
+
 
 Autor
 Nome: Danilo Souza
